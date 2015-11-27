@@ -1,5 +1,7 @@
 # Mission-Impossible-Notes
 
+![](http://khannover.mooo.com/impossible/demo/min_snap1.PNG)
+
 ## Beschreibung
 
 - Sicher
