@@ -99,7 +99,7 @@ if(!empty($id)){
             <h2 class="center light-blue-text"><i class="material-icons">description</i></h2>
             <h5 class="center">Quelloffen</h5>
 
-            <p class="light">We have provided detailed documentation as well as specific code examples to help new users get started. We are also always open to feedback and can answer any questions a user may have about Materialize.</p>
+            <p class="light">Der Code ist frei verfügbar unter <a href="https://github.com/khannover/Mission-Impossible-Notes.git">GitHub</a></p>
           </div>
         </div>
       </div>
