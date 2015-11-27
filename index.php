@@ -99,7 +99,7 @@ if(!empty($id)){
             <h2 class="center light-blue-text"><i class="material-icons">description</i></h2>
             <h5 class="center">Quelloffen</h5>
 
-            <p class="light">Der Code ist frei verfügbar unter <a href="https://github.com/khannover/Mission-Impossible-Notes.git">GitHub</a></p>
+            <p class="light">Der Code ist frei verf&uuml;gbar unter <a href="https://github.com/khannover/Mission-Impossible-Notes.git">GitHub</a></p>
           </div>
         </div>
       </div>
