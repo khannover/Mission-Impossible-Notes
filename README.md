@@ -9,4 +9,6 @@
 
 ## Installation
 
-git clone https://github.com/khannover/mission_impossible_notes.git
+`git clone https://github.com/khannover/Mission-Impossible-Notes.git`
+
+Es ist wichtig für die Sicherheit, dass das Programm über HTTPS aufgerufen wird.
