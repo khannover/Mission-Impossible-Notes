@@ -41,7 +41,19 @@ if(!empty($id)){
 		$text = file_get_contents($file);
 		$deleted = unlink($file);
 		$text = mcrypt_decrypt(MCRYPT_RIJNDAEL_256,  $password, $text, MCRYPT_MODE_ECB, $iv);
-		echo $text;
+?>
+
+<div class="row center">
+  <div class="card blue-grey darken-1">
+    <div class="card-content white-text">
+      <span class="card-title">Hinterlegte Nachricht</span>
+      <p> <?php echo $text; ?>
+      </p>
+    </div>
+  </div>
+</div>
+
+<?php
 		if($deleted){
 			echo "<br><br><i>Nachricht gelesen und gelöscht.</i>";
 		}
@@ -50,7 +62,7 @@ if(!empty($id)){
 	}
 }else if(!empty($message)){
 	$id = generateRandomString();
-	$password = generateRandomString(16);
+	$password = generateRandomString(32);
   	$message = mcrypt_encrypt(MCRYPT_RIJNDAEL_256,  $password, $message, MCRYPT_MODE_ECB, $iv); 
 	$written = file_put_contents("$notepath/$id.txt", $message); 
 	echo 'Diesen Link können Sie an den Empfänger übermitteln.<br>';
