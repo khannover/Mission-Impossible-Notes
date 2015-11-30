@@ -43,10 +43,10 @@ if(!empty($id)){
 		$text = mcrypt_decrypt(MCRYPT_RIJNDAEL_256,  $password, $text, MCRYPT_MODE_ECB, $iv);
 		echo $text;
 		if($deleted){
-			echo "<br><br><i>Message was deleted.</i>";
+			echo "<br><br><i>Nachricht gelesen und gelöscht.</i>";
 		}
 	}else{
-		echo "no message found";
+		echo "Keine Nachricht gefunden.";
 	}
 }else if(!empty($message)){
 	$id = generateRandomString();
@@ -65,7 +65,7 @@ if(!empty($id)){
     </div>
   </div>
   <div class="row">
-    <input type="submit" class="waves-effect waves-light btn">
+    <input type="submit" class="waves-effect waves-light orange btn">
   </div>
 </form>
 
@@ -99,7 +99,7 @@ if(!empty($id)){
             <h2 class="center light-blue-text"><i class="material-icons">description</i></h2>
             <h5 class="center">Quelloffen</h5>
 
-            <p class="light">Der Code ist frei verf&uuml;gbar unter <a href="https://github.com/khannover/Mission-Impossible-Notes.git">GitHub</a></p>
+            <p class="light">Der Code ist öffentlich verfügbar unter <a href="https://github.com/khannover/mission_impossible_notes.git">Github</a></p>
           </div>
         </div>
       </div>
