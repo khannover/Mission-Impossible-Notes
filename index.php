@@ -10,6 +10,7 @@
   <!-- Compiled and minified JavaScript -->
   <script type="text/javascript" src="materialize/js/jquery.min.js"></script>
   <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+  <script type="text/javascript" src="clipboard.min.js"></script>
 </head>
 <body>
 <div class="section no-pad-bot" id="index-banner">
@@ -30,6 +31,7 @@ function generateRandomString($length = 50) {
 $notepath = '.notes';
 $id = $_GET['id'];
 $password = $_GET['password'];
+$script_path = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 
 $message=$_POST['message'];
 
@@ -66,7 +68,9 @@ if(!empty($id)){
   	$message = mcrypt_encrypt(MCRYPT_RIJNDAEL_256,  $password, $message, MCRYPT_MODE_ECB, $iv); 
 	$written = file_put_contents("$notepath/$id.txt", $message); 
 	echo 'Diesen Link können Sie an den Empfänger übermitteln.<br>';
-	echo '<a href="index.php?id=' . $id . '.txt&password=' . $password . '">Link</a>';
+	echo '<a href="' . $script_path. '?id=' . $id . '.txt&password=' . $password . '">Link</a>';
+    	echo '<br><br><input type="button" id="copy-btn" class="waves-effect waves-light orange btn" data-clipboard-text="' . 
+        $script_path. '?id=' . $id . '.txt&password=' . $password . '" value="Kopieren">';
 }
 ?>
 
@@ -118,6 +122,8 @@ if(!empty($id)){
 
     </div>
 
-      <!--Import jQuery before materialize.js-->
+<script type="text/javascript">
+new Clipboard('#copy-btn');
+</script>
 </body>
 </html>
