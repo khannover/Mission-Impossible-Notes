@@ -31,7 +31,10 @@ function generateRandomString($length = 50) {
 $notepath = '.notes';
 $id = $_GET['id'];
 $password = $_GET['password'];
-$script_path = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+if(!empty($_SERVER['HTTPS'])){
+  $protocol .= "s";
+}
+$script_path = $protocol . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 
 $message=$_POST['message'];
 
