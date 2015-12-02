@@ -5,7 +5,7 @@
 ## Beschreibung
 
 - Sicher
-  - Jede Nachricht kann nur einmal gelesen werden. 
+  - Jede Nachricht kann nur einmal gelesen werden.
   - MIN speichert Ihre Nachrichten AES-256-verschlüsselt auf dem Server zwischen und löscht beim ersten Lesen die Nachricht automatisch. 
   - Ein 32-stelliges Passwort zum Ver- und Entschlüsseln wird jedesmal zufällig generiert und im erzeugten Link hinterlegt. Es wird nirgendwo bis zum Abruf der Nachricht gespeichert. Beim Abruf der Nachricht erscheint das Passwort zwar als Parameter im Webserver-Log, die Nachricht wird jedoch im gleichen Augenblick zerstört und damit wird das Passwort unbrauchbar.
 - Zusammenarbeit
