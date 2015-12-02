@@ -12,17 +12,18 @@
   <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
   <script type="text/javascript" src="clipboard.min.js"></script>
 </head>
-<body>
+<body class="amber lighten-5">
 <div class="section no-pad-bot" id="index-banner">
     <div class="container">
+    <a href="https://github.com/khannover/Mission-Impossible-Notes"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/652c5b9acfaddf3a9c326fa6bde407b87f7be0f4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"></a>
       <br><br>
       <h1 class="header center orange-text">(M)ission (I)mpossible (N)otes</h1>
       <div class="row center">
         <h5 class="header col s12 light">A self-destructing notes app</h5>
 <?php
 
-  $iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB); 
-  $iv = mcrypt_create_iv($iv_size, MCRYPT_RAND); 
+  $iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB);
+  $iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
 
 function generateRandomString($length = 50) {
     return substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-()"), 0, $length);
@@ -31,6 +32,7 @@ function generateRandomString($length = 50) {
 $notepath = '.notes';
 $id = $_GET['id'];
 $password = $_GET['password'];
+$protocol = "http";
 if(!empty($_SERVER['HTTPS'])){
   $protocol .= "s";
 }
@@ -39,13 +41,13 @@ $script_path = $protocol . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI
 $message=$_POST['message'];
 
 if(!empty($id)){
-	$file = "$notepath/$id";
-	$text = "";
-	$deleted = false;
-	if(file_exists($file)){
-		$text = file_get_contents($file);
-		$deleted = unlink($file);
-		$text = mcrypt_decrypt(MCRYPT_RIJNDAEL_256,  $password, $text, MCRYPT_MODE_ECB, $iv);
+        $file = "$notepath/$id";
+        $text = "";
+        $deleted = false;
+        if(file_exists($file)){
+                $text = file_get_contents($file);
+                $deleted = unlink($file);
+                $text = mcrypt_decrypt(MCRYPT_RIJNDAEL_256,  $password, $text, MCRYPT_MODE_ECB, $iv);
 ?>
 
 <div class="row center">
@@ -59,20 +61,20 @@ if(!empty($id)){
 </div>
 
 <?php
-		if($deleted){
-			echo "<br><br><i>Nachricht gelesen und gelöscht.</i>";
-		}
-	}else{
-		echo "Keine Nachricht gefunden.";
-	}
+                if($deleted){
+                        echo "<br><br><i>Nachricht gelesen und gelöscht.</i>";
+                }
+        }else{
+                echo "Keine Nachricht gefunden.";
+        }
 }else if(!empty($message)){
-	$id = generateRandomString();
-	$password = generateRandomString(32);
-  	$message = mcrypt_encrypt(MCRYPT_RIJNDAEL_256,  $password, $message, MCRYPT_MODE_ECB, $iv); 
-	$written = file_put_contents("$notepath/$id.txt", $message); 
-	echo 'Diesen Link können Sie an den Empfänger übermitteln.<br>';
-	echo '<a href="' . $script_path. '?id=' . $id . '.txt&password=' . $password . '">Link</a>';
-    	echo '<br><br><input type="button" id="copy-btn" class="waves-effect waves-light orange btn" data-clipboard-text="' . 
+        $id = generateRandomString();
+        $password = generateRandomString(32);
+        $message = mcrypt_encrypt(MCRYPT_RIJNDAEL_256,  $password, $message, MCRYPT_MODE_ECB, $iv);
+        $written = file_put_contents("$notepath/$id.txt", $message);
+        echo 'Diesen Link können Sie an den Empfänger übermitteln.<br>';
+        echo '<a href="' . $script_path. '?id=' . $id . '.txt&password=' . $password . '">Link</a>';
+        echo '<br><br><input type="button" id="copy-btn" class="waves-effect waves-light orange btn" data-clipboard-text="' .
         $script_path. '?id=' . $id . '.txt&password=' . $password . '" value="Kopieren">';
 }
 ?>
@@ -84,7 +86,7 @@ if(!empty($id)){
     </div>
   </div>
   <div class="row">
-    <input type="submit" class="waves-effect waves-light orange btn">
+    <input type="submit" class="waves-effect waves-light orange btn" value="Link erstellen">
   </div>
 </form>
 
