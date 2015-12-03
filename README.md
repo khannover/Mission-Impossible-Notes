@@ -27,3 +27,10 @@ Es ist wichtig für die Sicherheit, dass das Programm über HTTPS aufgerufen wir
 ## Demo
 
 [Demo (Self signed certificate)](https://khannover.mooo.com)
+
+## Donate
+
+If you like my work and want to support me, please donate :-)
+Any amount is welcome ;-)
+
+[Donate](https://www.paypal.me/khannover)
