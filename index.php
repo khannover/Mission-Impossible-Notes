@@ -26,7 +26,7 @@
   $iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
 
 function generateRandomString($length = 50) {
-    return substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-()"), 0, $length);
+    return substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-") . str_shuffle("abcdefghijklmnopqrstuvwxyz"), 0, $length);
 }
 
 $notepath = '.notes';
