@@ -54,7 +54,7 @@ if(!empty($id)){
   <div class="card blue-grey darken-1">
     <div class="card-content white-text">
       <span class="card-title">Hinterlegte Nachricht</span>
-      <p> <?php echo $text; ?>
+      <p> <?php echo htmlentities($text); ?>
       </p>
     </div>
   </div>
