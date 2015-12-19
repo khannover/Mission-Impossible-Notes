@@ -18,11 +18,27 @@
 
 ## Installation
 
+### Git Clone
+
 `git clone https://github.com/khannover/Mission-Impossible-Notes.git`
 
 Das Verzeichnis `.notes` muss für den User, unter dem der Webserver läuft (z.B. www-data), beschreibbar sein.
 
-Es ist wichtig für die Sicherheit, dass das Programm über HTTPS aufgerufen wird, damit die Nachricht nicht unverschlüsselt und damit unsicher an den Server übertragen wird. Für private Zwecke reicht auch ein selbst signiertes SSL-Zertifikat.
+**Es ist wichtig für die Sicherheit, dass das Programm über HTTPS aufgerufen wird, damit die Nachricht nicht unverschlüsselt und damit unsicher an den Server übertragen wird. Für private Zwecke reicht auch ein selbst signiertes SSL-Zertifikat.**
+
+### Apache2
+
+Der Zugriff auf Dateien im Verzeichnis `.notes` sollte unbedingt im Apache per Befehl verboten werden. Im Repository liegt eine .htaccess-Datei, die genau das bewirkt, falls die Direktive `AllowOverride Limit`oder `AllowOverride All` eingetragen ist.
+
+Beispiel:
+
+```
+  <Directory /var/www/min>
+    AllowOverride All
+  </Directory>
+```
+
+Andernfalls können die Textdateien, welche die Nachricht verschlüsselt enthalten, über die Webseite heruntergeladen werden.
 
 ## Demo
 
