@@ -1,6 +1,6 @@
 # Mission-Impossible-Notes
 
-![](http://khannover.mooo.com/impossible/demo/min_snap2.PNG)
+![](https://hannover38.de/min/min.png)
 
 ## Beschreibung
 
@@ -42,7 +42,7 @@ Andernfalls können die Textdateien, welche die Nachricht verschlüsselt enthalt
 
 ## Demo
 
-[Demo (Self signed certificate)](https://khannover.mooo.com)
+[Demo](https://hannover38.de/min)
 
 ## Donate
 
