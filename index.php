@@ -39,9 +39,11 @@ if(!empty($_SERVER['HTTPS'])){
 $script_path = $protocol . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 
 $message=$_POST['message'];
+$mail=$_POST['mail'];
 
 if(!empty($id)){
         $file = "$notepath/$id";
+        $mail = "$notepath/" . str_replace(".txt", ".mail", $id);
         $text = "";
         $deleted = false;
         if(file_exists($file)){
@@ -50,7 +52,7 @@ if(!empty($id)){
                 $text = mcrypt_decrypt(MCRYPT_RIJNDAEL_256,  $password, $text, MCRYPT_MODE_ECB, $iv);
 ?>
 
-<div class="row center">
+<div class="row center"> 
   <div class="card blue-grey darken-1">
     <div class="card-content white-text">
       <span class="card-title">Hinterlegte Nachricht</span>
@@ -61,28 +63,51 @@ if(!empty($id)){
 </div>
 
 <?php
-                if($deleted){
-                        echo "<br><br><i>Nachricht gelesen und gelöscht.</i>";
-                }
-        }else{
-                echo "Keine Nachricht gefunden.";
-        }
-}else if(!empty($message)){
-        $id = generateRandomString();
-        $password = generateRandomString(32);
-        $message = mcrypt_encrypt(MCRYPT_RIJNDAEL_256,  $password, $message, MCRYPT_MODE_ECB, $iv);
-        $written = file_put_contents("$notepath/$id.txt", $message);
-        echo 'Diesen Link können Sie an den Empfänger übermitteln.<br>';
-        echo '<a href="' . $script_path. '?id=' . $id . '.txt&password=' . $password . '">Link</a>';
-        echo '<br><br><input type="button" id="copy-btn" class="waves-effect waves-light orange btn" data-clipboard-text="' .
-        $script_path. '?id=' . $id . '.txt&password=' . $password . '" value="Kopieren">';
-}
+				if($deleted){
+						echo "<br><br><i>Nachricht gelesen und gelöscht.</i>";
+						if(file_exists($mail)){
+							$mailcontent = file_get_contents($mail);
+							$to = mcrypt_decrypt(MCRYPT_RIJNDAEL_256,  $password, $mailcontent, MCRYPT_MODE_ECB, $iv);
+							mail(
+								$to, //TO
+								"Nachricht $id wurde gelesen", // SUBJECT 
+								"Ihre Nachricht mit der ID $id wurde am " . date("d.m.Y") . " um " . date("H:i:s") . " Uhr gelesen und gelöscht." //MESSAGE
+							);
+							$maildeleted = unlink($mail);
+						}
+				}
+				}else{
+						echo "Keine Nachricht gefunden.";
+				}
+		}else if(!empty($message)){
+			$id = generateRandomString();
+			$password = generateRandomString(32);
+			$message = mcrypt_encrypt(MCRYPT_RIJNDAEL_256,  $password, $message, MCRYPT_MODE_ECB, $iv);
+			$written = file_put_contents("$notepath/$id.txt", $message);
+			
+			echo 'Diesen Link können Sie an den Empfänger übermitteln.<br>';
+			echo '<a href="' . $script_path. '?id=' . $id . '.txt&password=' . $password . '">Link</a>';
+			echo '<br><br><input type="button" id="copy-btn" class="waves-effect waves-light orange btn" data-clipboard-text="' .
+			$script_path. '?id=' . $id . '.txt&password=' . $password . '" value="Kopieren">';
+			
+			if($mail){
+				$to = mcrypt_encrypt(MCRYPT_RIJNDAEL_256,  $password, $mail, MCRYPT_MODE_ECB, $iv);
+				$mailwritten = file_put_contents("$notepath/$id.mail", $to);
+				mail(
+					$mail, //TO
+					"Nachricht $id wurde erstellt", // SUBJECT 
+					"Ihre Nachricht mit der ID $id wurde am " . date("d.m.Y") . " um " . date("H:i:s") . " Uhr erstellt. \n" .  //MESSAGE
+					"Sie erhalten eine weitere Mail wenn Sie vom Emfpänger gelesen wurde."
+				);
+			}
+		}
 ?>
 
 <form class="col s12" method="POST" action="index.php">
   <div class="row">
     <div class="input-field center">
       <textarea name="message" id="message" class="materialize-textarea" placeholder="Ihre geheime Nachricht"></textarea>
+	  <input name="mail" id="mail" class="matrialize-textinput" placeholder="Lesebestätigung an diese E-Mail Adresse" type="text">
     </div>
   </div>
   <div class="row">
