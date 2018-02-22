@@ -107,7 +107,7 @@ if(!empty($id)){
   <div class="row">
     <div class="input-field center">
       <textarea name="message" id="message" class="materialize-textarea" placeholder="Ihre geheime Nachricht"></textarea>
-	  <input name="mail" id="mail" class="matrialize-textinput" placeholder="Lesebestätigung an diese E-Mail Adresse" type="text">
+	  <input name="mail" id="mail" class="matrialize-textinput" placeholder="Lesebestätigung an diese E-Mail Adresse (optional)" type="text">
     </div>
   </div>
   <div class="row">
