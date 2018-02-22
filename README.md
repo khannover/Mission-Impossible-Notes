@@ -1,6 +1,6 @@
 # Mission-Impossible-Notes
 
-![](https://hannover38.de/min/screenshot.png)
+![](https://hannover38.de/min/screenshot.png?fromGithub=true)
 
 ## Beschreibung
 
