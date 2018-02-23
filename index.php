@@ -90,7 +90,7 @@ if(!empty($id)){
 			echo '<br><br><input type="button" id="copy-btn" class="waves-effect waves-light orange btn" data-clipboard-text="' .
 			$script_path. '?id=' . $id . '.txt&password=' . $password . '" value="Kopieren">';
 			
-			echo '<br><br><a href="' . 'mailto:?subject=Jemand möchte Ihnen etwas mitteilen&body=Bitte klicken Sie auf den folgenden Link: ' . $script_path . "?id=$id.txt%26password=$password" . '">Per Mail teilen</a>';
+			echo '<br><br><a href="' . 'mailto:?subject=Eine Nachricht wurde für Sie hinterlegt (' . $id . ')&body=Bitte klicken Sie auf den folgenden Link: ' . $script_path . "?id=$id.txt%26password=$password" . '">Per Mail teilen</a>';
 			
 			if($mail){
 				$to = mcrypt_encrypt(MCRYPT_RIJNDAEL_256,  $password, $mail, MCRYPT_MODE_ECB, $iv);
