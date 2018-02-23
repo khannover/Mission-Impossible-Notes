@@ -90,7 +90,7 @@ if(!empty($id)){
 			echo '<br><br><input type="button" id="copy-btn" class="waves-effect waves-light orange btn" data-clipboard-text="' .
 			$script_path. '?id=' . $id . '.txt&password=' . $password . '" value="Kopieren">';
 			
-			echo '<br><br><a href="' . 'mailto:?subject=Eine Nachricht wurde für Sie hinterlegt (' . $id . ')&body=Bitte klicken Sie auf den folgenden Link: ' . $script_path . "?id=$id.txt%26password=$password" . '">Per Mail teilen</a>';
+			echo '<br><br><a href="' . 'mailto:?subject=Eine Nachricht wurde für Sie hinterlegt (' . $id . ')&body=Bitte klicken Sie auf den folgenden Link%0D%0A%0D%0A' . $script_path . "?id=$id.txt%26password=$password" . ".%0D%0A%0D%0A Anschlie&szlig;end wird diese Nachricht unwiederbringlich gel&ouml;scht!" . '">Per Mail teilen</a>';
 			
 			if($mail){
 				$to = mcrypt_encrypt(MCRYPT_RIJNDAEL_256,  $password, $mail, MCRYPT_MODE_ECB, $iv);
@@ -109,7 +109,7 @@ if(!empty($id)){
   <div class="row">
     <div class="input-field center">
       <textarea name="message" id="message" class="materialize-textarea" placeholder="Ihre geheime Nachricht"></textarea>
-	  <input name="mail" id="mail" class="matrialize-textinput" placeholder="Lesebestätigung an diese E-Mail Adresse" type="text">
+	  <input name="mail" id="mail" class="matrialize-textinput" placeholder="Lesebestätigung an diese E-Mail Adress (optional)" type="text">
     </div>
   </div>
   <div class="row">
