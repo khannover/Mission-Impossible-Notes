@@ -41,6 +41,10 @@ Beispiel:
 
 Andernfalls können die Textdateien, welche die Nachricht verschlüsselt enthalten, über die Webseite heruntergeladen werden.
 
+### Voraussetzungen
+
+Dieses Tool benötigt das php Module ```mcrypt``` und ```json``` 
+
 ## API
 
 Per POST-Request an die api.php können Nachrichten erstellt und gelesen werden.
