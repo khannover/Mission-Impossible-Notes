@@ -1,5 +1,8 @@
 # Mission-Impossible-Notes
 
+Wird nun hier fortgeführt:
+https://hannover38.de/gitea/kai/Mission-Impossible-Notes
+
 ![](https://hannover38.de/min/screenshot.png?fromGithub=true)
 
 ## Beschreibung
