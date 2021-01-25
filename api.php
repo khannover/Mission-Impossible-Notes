@@ -1,17 +1,13 @@
 <?php
 
-  $iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB);
-  $iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
-
+$iv_size = openssl_cipher_iv_length($cipher);
+$iv = hex2bin($_GET['iv']) ?? random_bytes($iv_size);
 function generateRandomString($length = 50) {
     return substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-") . str_shuffle("abcdefghijklmnopqrstuvwxyz"), 0, $length);
 }
 
 $notepath = '.notes';
-$protocol = "http";
-if(!empty($_SERVER['HTTPS'])){
-  $protocol .= "s";
-}
+$protocol = "https";
 $script_path = $protocol . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 
 $payload = json_decode(file_get_contents('php://input'));
@@ -29,14 +25,14 @@ if($payload->action){
 		}else if(file_exists($file)){
 				$text = file_get_contents($file);
 				$deleted = unlink($file);
-				$text = trim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256,  $payload->password, $text, MCRYPT_MODE_ECB, $iv));
+				$text = trim(openssl_decrypt ($text, $cipher, $payload->password, $options, $iv));
 			if($deleted){
 				$result["status"] = "success";
 				$result["message"] = $text;
 				$result["id"] = $payload->id;
 				if(file_exists($mail)){
-				$mailcontent = file_get_contents($mail);
-					$to = mcrypt_decrypt(MCRYPT_RIJNDAEL_256,  $payload->password, $mailcontent, MCRYPT_MODE_ECB, $iv);
+					$mailcontent = file_get_contents($mail);
+					$to = openssl_decrypt ($mailcontent, $cipher, $payload->password, $options, $iv);
 					mail(
 						$to, //TO
 						"Nachricht $id wurde gelesen", // SUBJECT 
@@ -55,7 +51,7 @@ if($payload->action){
 		}else{
 			$id = generateRandomString();
 			$password = generateRandomString(32);
-			$message = mcrypt_encrypt(MCRYPT_RIJNDAEL_256,  $password, trim($payload->message), MCRYPT_MODE_ECB, $iv);
+			$message = openssl_encrypt($payload->message, $cipher, $password, $options, $iv);
 			$written = file_put_contents("$notepath/$id.txt", $message);
 			
 			$result["link"] = str_replace("api.php", "index.php", $script_path) . '?id=' . $id . '.txt&password=' . $password;
@@ -64,7 +60,7 @@ if($payload->action){
 			$result["status"] = "success";
 			
 			if($payload->mail){
-				$to = mcrypt_encrypt(MCRYPT_RIJNDAEL_256,  $password, $payload->mail, MCRYPT_MODE_ECB, $iv);
+				$to = openssl_encrypt($payload->mail, $cipher, $password, $options, $iv);
 				$mailwritten = file_put_contents("$notepath/$id.mail", $to);
 				mail(
 					$payload->mail, //TO

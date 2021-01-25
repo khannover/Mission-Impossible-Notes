@@ -22,20 +22,22 @@
         <h5 class="header col s12 light">A self-destructing notes app</h5>
 <?php
 
-  $iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB);
-  $iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
 
 function generateRandomString($length = 50) {
     return substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-") . str_shuffle("abcdefghijklmnopqrstuvwxyz"), 0, $length);
 }
 
+
+$cipher = "BF";
+//$iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB);
+$iv_size = openssl_cipher_iv_length($cipher);
+//$iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
+$iv = hex2bin($_GET['iv']) ?? random_bytes($iv_size);
 $notepath = '.notes';
 $id = $_GET['id'];
 $password = $_GET['password'];
-$protocol = "http";
-if(!empty($_SERVER['HTTPS'])){
-  $protocol .= "s";
-}
+
+$protocol = "https";
 $script_path = $protocol . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 
 $message=$_POST['message'];
@@ -47,9 +49,11 @@ if(!empty($id)){
         $text = "";
         $deleted = false;
         if(file_exists($file)){
+		$options = 0;
                 $text = file_get_contents($file);
                 $deleted = unlink($file);
-                $text = mcrypt_decrypt(MCRYPT_RIJNDAEL_256,  $password, $text, MCRYPT_MODE_ECB, $iv);
+                //$text = mcrypt_decrypt(MCRYPT_RIJNDAEL_256,  $password, $text, MCRYPT_MODE_ECB, $iv);
+		$text = openssl_decrypt ($text, $cipher, $password, $options, $iv);
 ?>
 
 <div class="row center">
@@ -66,8 +70,10 @@ if(!empty($id)){
                                 if($deleted){
                                                 echo "<br><br><i>Nachricht gelesen und gelöscht.</i>";
                                                 if(file_exists($mail)){
+							$options = 0;
                                                         $mailcontent = file_get_contents($mail);
-                                                        $to = mcrypt_decrypt(MCRYPT_RIJNDAEL_256,  $password, $mailcontent, MCRYPT_MODE_ECB, $iv);
+                                                        //$to = mcrypt_decrypt(MCRYPT_RIJNDAEL_256,  $password, $mailcontent, MCRYPT_MODE_ECB, $iv);
+							$to = openssl_decrypt ($mailcontent, $cipher, $password, $options, $iv);
                                                         mail(
                                                                 $to, //TO
                                                                 "Nachricht $id wurde gelesen", // SUBJECT
@@ -80,20 +86,23 @@ if(!empty($id)){
                                                 echo "Keine Nachricht gefunden.";
                                 }
                 }else if(!empty($message)){
+			$options = 0;
                         $id = generateRandomString();
                         $password = generateRandomString(32);
-                        $message = mcrypt_encrypt(MCRYPT_RIJNDAEL_256,  $password, $message, MCRYPT_MODE_ECB, $iv);
-                        $written = file_put_contents("$notepath/$id.txt", $message);
+                        //$message = mcrypt_encrypt(MCRYPT_RIJNDAEL_256,  $password, $message, MCRYPT_MODE_ECB, $iv);
+			$message = openssl_encrypt($message, $cipher, $password, $options, $iv);
+			$written = file_put_contents("$notepath/$id.txt", $message);
 
                         echo 'Diesen Link können Sie an den Empfänger übermitteln.<br>';
-                        echo '<a href="' . $script_path. '?id=' . $id . '.txt&password=' . $password . '">Link</a>';
+                        echo '<a href="' . $script_path. '?id=' . $id . '.txt&password=' . $password . '&iv='.bin2hex($iv).'">Link</a>';
                         echo '<br><br><input type="button" id="copy-btn" class="waves-effect waves-light orange btn" data-clipboard-text="' .
                         $script_path. '?id=' . $id . '.txt&password=' . $password . '" value="Kopieren">';
 
                         echo '<br><br><a href="' . 'mailto:?subject=Eine Nachricht wurde für Sie hinterlegt (' . $id . ')&body=Bitte klicken Sie auf den folgenden Link%0D%0A%0D%0A' . $script_path . "?id=$id.txt%26password=$password" . ".%0D%0A%0D%0A Anschlie&szlig;end wird diese Nachricht unwiederbringlich gel&ouml;scht!" . '">Per Mail teilen</a>';
 
                         if($mail){
-                                $to = mcrypt_encrypt(MCRYPT_RIJNDAEL_256,  $password, $mail, MCRYPT_MODE_ECB, $iv);
+                                //$to = mcrypt_encrypt(MCRYPT_RIJNDAEL_256,  $password, $mail, MCRYPT_MODE_ECB, $iv);
+				$to = openssl_encrypt($mail, $cipher, $password, $options, $iv);
                                 $mailwritten = file_put_contents("$notepath/$id.mail", $to);
                                 mail(
                                         $mail, //TO
