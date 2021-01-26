@@ -94,7 +94,7 @@ if(!empty($id)){
                         echo 'Diesen Link können Sie an den Empfänger übermitteln.<br>';
                         echo '<a href="' . $script_path. '?id=' . $id . '.txt&password=' . $password . '&iv='.bin2hex($iv).'">Link</a>';
                         echo '<br><br><input type="button" id="copy-btn" class="waves-effect waves-light orange btn" data-clipboard-text="' .
-                        $script_path. '?id=' . $id . '.txt&password=' . $password . '" value="Kopieren">';
+                        $script_path. '?id=' . $id . '.txt&password=' . $password . '&iv='.bin2hex($iv).'" value="Kopieren">';
 
                         echo '<br><br><a href="' . 'mailto:?subject=Eine Nachricht wurde für Sie hinterlegt (' . $id . ')&body=Bitte klicken Sie auf den folgenden Link%0D%0A%0D%0A' . $script_path . "?id=$id.txt%26password=$password" . ".%0D%0A%0D%0A Anschlie&szlig;end wird diese Nachricht unwiederbringlich gel&ouml;scht!" . '">Per Mail teilen</a>';
 
