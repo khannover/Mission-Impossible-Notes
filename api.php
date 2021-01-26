@@ -1,7 +1,7 @@
 <?php
 
 $iv_size = openssl_cipher_iv_length($cipher);
-$iv = hex2bin($_GET['iv']) ?? random_bytes($iv_size);
+$iv = $_GET['iv'] ?? random_bytes($iv_size);
 function generateRandomString($length = 50) {
     return substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-") . str_shuffle("abcdefghijklmnopqrstuvwxyz"), 0, $length);
 }
@@ -25,14 +25,14 @@ if($payload->action){
 		}else if(file_exists($file)){
 				$text = file_get_contents($file);
 				$deleted = unlink($file);
-				$text = trim(openssl_decrypt ($text, $cipher, $payload->password, $options, $iv));
+				$text = trim(openssl_decrypt ($text, $cipher, $payload->password, $options, hex2bin($iv)));
 			if($deleted){
 				$result["status"] = "success";
 				$result["message"] = $text;
 				$result["id"] = $payload->id;
 				if(file_exists($mail)){
 					$mailcontent = file_get_contents($mail);
-					$to = openssl_decrypt ($mailcontent, $cipher, $payload->password, $options, $iv);
+					$to = openssl_decrypt ($mailcontent, $cipher, $payload->password, $options, hex2bin($iv));
 					mail(
 						$to, //TO
 						"Nachricht $id wurde gelesen", // SUBJECT 
@@ -54,13 +54,13 @@ if($payload->action){
 			$message = openssl_encrypt($payload->message, $cipher, $password, $options, $iv);
 			$written = file_put_contents("$notepath/$id.txt", $message);
 			
-			$result["link"] = str_replace("api.php", "index.php", $script_path) . '?id=' . $id . '.txt&password=' . $password;
+			$result["link"] = str_replace("api.php", "index.php", $script_path) . '?id=' . $id . '.txt&password=' . $password . '&iv='.bin2hex($iv);
 			$result["id"] = $id;
 			$result["password"] = $password;
 			$result["status"] = "success";
 			
 			if($payload->mail){
-				$to = openssl_encrypt($payload->mail, $cipher, $password, $options, $iv);
+				$to = openssl_encrypt($payload->mail, $cipher, $password, $options, hex2bin($iv));
 				$mailwritten = file_put_contents("$notepath/$id.mail", $to);
 				mail(
 					$payload->mail, //TO
