@@ -124,7 +124,7 @@ echo '
                                                 }
                                 }
                                 }else{
-                                                echo "Keine Nachricht gefunden.";
+                                                echo "<span style='color:red'>Keine Nachricht gefunden.</span>";
                                 }
                 }else if(!empty($message)){
 			$options = 0;
@@ -154,11 +154,12 @@ echo '
                 }
 ?>
 
+<br><hr><b>Neue Nachricht</b>
 <form class="col s12" method="POST" action="index.php">
   <div class="row">
     <div class="input-field center">
       <textarea name="message" id="message" class="materialize-textarea" placeholder="Ihre geheime Nachricht"></textarea>
-          <input name="mail" id="mail" class="matrialize-textinput" placeholder="Lesebestätigung an diese E-Mail Adress (optional)" type="text">
+      <input name="mail" id="mail" class="matrialize-textinput" placeholder="Lesebestätigung an diese E-Mail Adress (optional)" type="text">
     </div>
   </div>
   <div class="row">
